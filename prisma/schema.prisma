@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Spot {
+  id         String  @id
+  currentBid Int
+  orders     Order[]
+
+  @@map("spots")
+}
+
+model Order {
+  id            Int     @id @default(autoincrement())
+  spotId        String
+  amountCents   Int
+  currency      String  @default("USD")
+  status        String  @default("pending")
+  dodoSessionId String? @unique @db.VarChar(120)
+  webhookId     String?
+  company       String?
+  website       String?
+  logoFile      String?
+  logoMimeType  String?
+  logoUrl       String?
+  logoPublicId  String?
+  createdAt     BigInt
+
+  spot Spot @relation(fields: [spotId], references: [id])
+
+  @@index([spotId])
+  @@index([status])
+  @@map("orders")
+}
+
+model WebhookEvent {
+  id          String @id
+  type        String?
+  processedAt BigInt
+
+  @@map("webhook_events")
+}
