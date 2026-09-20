@@ -35,3 +35,6 @@ wrangler.toml
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# local logo uploads (test artifacts)
+var/uploads
